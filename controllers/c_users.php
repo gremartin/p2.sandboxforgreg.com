@@ -11,9 +11,37 @@ class users_controller extends base_controller {
     }
 
     public function signup() {
-        echo "This is the signup page";
+       #Setup view
+	   $this->template->content = View::instance('v_users_signup');
+	   $this->template->title = "Sign Up";
+	   
+	   #Render template
+	   echo $this -> template;
     }
-
+	
+	public function p_signup() {
+		# Displays POST data from form
+		/*
+		echo '<pre>';
+		print_r($_POST);
+		echo '</pre>';
+		*/
+		# Insert user into database
+		$_POST['created'] = Time::now();
+		$_POST['modified'] = Time::now();
+		
+		#Encrypt password
+		$_POST['password'] = sha1(PASSWORD_SALT.$_POST['password']);
+		
+		#Create an encrypted token via user's email address and random string
+		$_POST['token'] = sha1(TOKEN_SALT.$_POST['email'].Utils::generate_random_string());
+		
+		$user_id = DB::instance(DB_NAME)->insert('users', $_POST);
+		# Confirm user is signed up.  SHould make real view eventually
+		echo 'You\'re signed up';
+		
+	}
+	
     public function login() {
         echo "This is the login page";
     }
