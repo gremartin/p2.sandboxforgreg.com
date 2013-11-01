@@ -1,3 +1,3 @@
 <?php ?>
-<h1>Welcome to Terse Words</h1>
-<p>Please sign up or log in</p>
+<h1>Welcome to <?=APP_NAME?><?php if($user) echo ', '.$user->first_name; ?></h1>
+
