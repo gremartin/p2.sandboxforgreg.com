@@ -13,27 +13,31 @@
 
 <body>	
 	
-	<div id ='menu'>
-		
-		<a href='/'>Home</a>
-		
-		<!-- Menu for logged in users -->
-		<?php if($user): ?>
-		
-			<a href='/users/logout'>Logout</a>
-			<a href='/users/profile'>Profile</a>
-		<?php else: ?>
-		<!-- Menu for users not logged in -->
-			<a href='/users/signup'>Sign up</a>
-			<a href='/users/login'>Log in</a>
+	<div id="page">
+		<div id ='menu'>
 			
-		<?php endif; ?>
-	</div>
-	
-	<br>
-	
-	<?php if(isset($content)) echo $content; ?>
+			<?php if($user) echo 'Hello, '.$user->first_name.'!'?>
+				
+			<a href='/'>Home</a>
+			
+			<!-- Menu for logged in users -->
+			<?php if($user): ?>
+			
+				<a href='/users/logout'>Logout</a>
+				<a href='/users/profile'>Profile</a>
+			<?php else: ?>
+			<!-- Menu for users not logged in -->
+				<a href='/users/signup'>Sign up</a>
+				<a href='/users/login'>Log in</a>
+				
+			<?php endif; ?>
+		</div>
+		
+		<br>
+		
+		<?php if(isset($content)) echo $content; ?>
 
-	<?php if(isset($client_files_body)) echo $client_files_body; ?>
+		<?php if(isset($client_files_body)) echo $client_files_body; ?>
+	</div>
 </body>
 </html>

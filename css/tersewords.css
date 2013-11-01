@@ -1,0 +1,9 @@
+@charset "utf-8";
+#page{
+	width: 960px;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+#menu{
+	text-align: right;
+}
