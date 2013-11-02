@@ -42,17 +42,16 @@ class users_controller extends base_controller {
 		
 	}
 	
-    public function login() {
+    public function login()	{
 		# Setup view
 			$this->template->content = View::instance('v_users_login');
 			$this->template->title = "Login";
 			
 		# Render template
 			echo $this->template;
-    }
+	}
 	
 	public function p_login()	{
-		
 		# Sanitize user data
 		$_POST = DB::instance(DB_NAME)->sanitize($_POST);
 		
@@ -70,7 +69,7 @@ class users_controller extends base_controller {
 		echo $token;
 		
 		# if token not found, login failed
-		/*
+		
 		if(!$token) {
 		
 			#return user to login page
@@ -79,7 +78,7 @@ class users_controller extends base_controller {
 		# But if we did, login succeeded! 
 		}else {
 		
-		        /* 
+		/* 
         Store this token in a cookie using setcookie()
         Important Note: *Nothing* else can echo to the page before setcookie is called
         Not even one single white space.
@@ -91,8 +90,8 @@ class users_controller extends base_controller {
 		#setcookie("token", $token, strtotime('+1 year'), '/');
 		
 		#Send user to main page or wherever I prefer
-		#Router::redirect("/");
-		#}
+		Router::redirect("/");
+		}
 		
 	}
 
