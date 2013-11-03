@@ -53,8 +53,8 @@ class posts_controller extends base_controller {
 			INNER JOIN users
 				ON posts.user_id = users.user_id
 			WHERE users_users.user_id = ".$this->user->user_id;
-		echo $q;
-		/*
+		#echo $q;
+		
 		# Run the query
 		$posts = DB::instance(DB_NAME)->select_rows($q);
 		
@@ -63,7 +63,7 @@ class posts_controller extends base_controller {
 		
 		# Render the View
 		echo $this->template;
-		*/
+		
 		}
 	public function users(){
 
