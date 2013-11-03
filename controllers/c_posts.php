@@ -40,7 +40,6 @@ class posts_controller extends base_controller {
 		$this->template->title	= "Posts";
 		
 		#	Build the query
-		
 		$q = "SELECT
 				posts.content,
 				posts.created,
@@ -53,8 +52,9 @@ class posts_controller extends base_controller {
 				ON posts.user_id = users_users.user_id_followed
 			INNER JOIN users
 				ON posts.user_id = users.user_id
-			WHERE users_users.user_id = 10";
-		
+			WHERE users_users.user_id = ".$this->user->user_id;
+		echo $q;
+		/*
 		# Run the query
 		$posts = DB::instance(DB_NAME)->select_rows($q);
 		
@@ -63,7 +63,7 @@ class posts_controller extends base_controller {
 		
 		# Render the View
 		echo $this->template;
-		
+		*/
 		}
 	public function users(){
 
