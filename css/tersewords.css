@@ -1,9 +1,23 @@
 @charset "utf-8";
 #page{
-	width: 960px;
-	margin-left: 40px;
-	margin-right: 40px;
+	width: 860px;
+	margin-left: 80px;
+	margin-right: 80px;
+}
+#header{
+	height: 57px;
 }
 #menu{
 	text-align: right;
+}
+#logo{
+	width: 268px;
+	height: 35px;
+	float: left;
+}
+h1{
+	text-align: center;
+}
+p{
+	font-size: 16px;
 }

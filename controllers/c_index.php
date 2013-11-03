@@ -34,7 +34,7 @@ class index_controller extends base_controller {
 			echo $this->template;
 			
 		# Get and print the current timestamp
-			echo Time::now();
+			#echo Time::now();
 
 	} # End of method
 	
