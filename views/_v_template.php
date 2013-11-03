@@ -22,7 +22,8 @@
 			
 			<!-- Menu for logged in users -->
 			<?php if($user): ?>
-			
+				<a href='/posts/add'>Post</a>
+				<a href='/posts/index'>View Posts</a>
 				<a href='/users/logout'>Logout</a>
 				<a href='/users/profile'>Profile</a>
 			<?php else: ?>

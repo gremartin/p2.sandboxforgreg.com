@@ -38,7 +38,14 @@ class users_controller extends base_controller{
 		
 		$user_id = DB::instance(DB_NAME)->insert('users', $_POST);
 		# Confirm user is signed up.  SHould make real view eventually
-		echo 'You\'re signed up';
+		#echo 'You\'re signed up';
+		#create variable to hold token value
+		$token = $_POST['token'];
+		#log user in
+		setcookie("token", $token, strtotime('+1 year'), '/');
+		
+		#Send user to main page or wherever I prefer
+		Router::redirect("/");
 		
 	}
 	
