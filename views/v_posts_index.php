@@ -1,4 +1,5 @@
 <?php>
+<h1>Posts</h1>
 <?php foreach($posts as $post): ?>
 	<article>
 		
