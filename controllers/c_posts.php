@@ -1,9 +1,8 @@
 <?php
 class posts_controller extends base_controller {
 
-	public function __contruct() {
-		parent::__contruct();
-		
+	public function __construct() {
+		parent::__construct();
 		#check if user is logged in before being able to use
 		if(!$this->user){
 			die("Members only. <a href='/users/login'>Login</a>");

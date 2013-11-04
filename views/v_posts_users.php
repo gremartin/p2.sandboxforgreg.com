@@ -1,8 +1,9 @@
 <?php?>
+<h1 class="listHeading" >Current Users</h1>
 <?php foreach($users as $user): ?>
 	
 	<!-- Print this user's name -->
-	<p><?=$user['first_name']?> <?=$user['last_name']?></p>
+	<h3><?=$user['first_name']?> <?=$user['last_name']?></h3>
 	
 	<!--If there exists a connection with this user, show an unfollow link -->
 	<?php if(isset($connections[$user['user_id']])): ?>

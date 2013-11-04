@@ -1,5 +1,5 @@
 <?php?>
-<h1>Posts</h1>
+<h1 class="listHeading" >Posts</h1>
 <?php foreach($posts as $post): ?>
 	<article>
 		
