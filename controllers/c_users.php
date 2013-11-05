@@ -26,27 +26,49 @@ class users_controller extends base_controller{
 		print_r($_POST);
 		echo '</pre>';
 		*/
-		# Insert user into database
-		$_POST['created'] = Time::now();
-		$_POST['modified'] = Time::now();
-		
-		#Encrypt password
-		$_POST['password'] = sha1(PASSWORD_SALT.$_POST['password']);
-		
-		#Create an encrypted token via user's email address and random string
-		$_POST['token'] = sha1(TOKEN_SALT.$_POST['email'].Utils::generate_random_string());
-		
-		$user_id = DB::instance(DB_NAME)->insert('users', $_POST);
-		# Confirm user is signed up.  SHould make real view eventually
-		#echo 'You\'re signed up';
-		#create variable to hold token value
-		$token = $_POST['token'];
-		#log user in
-		setcookie("token", $token, strtotime('+1 year'), '/');
-		
-		#Send user to main page or wherever I prefer
-		Router::redirect("/");
-		
+		# see if user already has account
+		# build query
+		$q = "SELECT email
+			FROM users
+			WHERE
+				email =  '".$_POST['email']."'";
+		$emailTest = DB::instance(DB_NAME)->select_field($q);
+		if($emailTest) {
+			$this->template->content = View::instance('v_users_signup_error');
+			$this->template->title = "Sign up Error";
+			$messageID = 0;
+			$this->template->content->messageID = $messageID;
+			echo $this->template;
+		}
+		else if($_POST['first_name'] == NULL OR $_POST['last_name'] == NULL OR $_POST['email'] == NULL OR $_POST['password'] == NULL){
+			$this->template->content = View::instance('v_users_signup_error');
+			$this->template->title = "Sign up Error";
+			$messageID = 1;
+			$this->template->content->messageID = $messageID;
+			echo $this->template;
+		}
+		else{
+			# Insert user into database
+			$_POST['created'] = Time::now();
+			$_POST['modified'] = Time::now();
+			
+			#Encrypt password
+			$_POST['password'] = sha1(PASSWORD_SALT.$_POST['password']);
+			
+			#Create an encrypted token via user's email address and random string
+			$_POST['token'] = sha1(TOKEN_SALT.$_POST['email'].Utils::generate_random_string());
+			
+			$user_id = DB::instance(DB_NAME)->insert('users', $_POST);
+			# Confirm user is signed up.  SHould make real view eventually
+			#echo 'You\'re signed up';
+			#create variable to hold token value
+			$token = $_POST['token'];
+			#log user in
+			setcookie("token", $token, strtotime('+1 year'), '/');
+			
+			#Send user to main page or wherever I prefer
+			Router::redirect("/");
+		}
 	}
 	
     public function login()	{
@@ -147,7 +169,7 @@ class users_controller extends base_controller{
 
 		# Setup view
 		$this->template->content = View::instance('v_users_profile');
-		$this->template->title   = "Profile of".$this->user->first_name;
+		$this->template->title   = "Profile of ".$this->user->first_name;
 
 		# Render template
 		echo $this->template;
