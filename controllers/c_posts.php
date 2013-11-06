@@ -29,10 +29,25 @@ class posts_controller extends base_controller {
 		
 		# Insert (no sanitization needed with this function
 		DB::instance(DB_NAME)->insert('posts', $_POST);
-		
-		#temporary feedback message
-		echo "Your post has been added.  <a href='/posts/add'>Add another</a>";
+		Router::redirect("/posts/confirm");
 	}
+	public function confirm(){
+		$this->template->content = View::instance('v_posts_add_confirm');
+		$this->template->title = "Post added";
+		echo $this->template;
+		
+	}
+	public function delete($post_id) {
+		#create sql statement
+		$where_condition = 'WHERE post_id = '.$post_id;
+		#execute statement - delete post
+		DB::instance(DB_NAME)->delete('posts', $where_condition);
+		#send user back to message index
+		Router::redirect("/posts/index");
+	
+	}
+	
+		
 	public function index(){
 		# Set up the View
 		$this->template->content = View::instance('v_posts_index');
@@ -42,6 +57,7 @@ class posts_controller extends base_controller {
 		$q = "SELECT
 				posts.content,
 				posts.created,
+				posts.post_id,
 				posts.user_id AS post_user_id,
 				users_users.user_id AS follower_id,
 				users.first_name,

@@ -17,7 +17,12 @@
 	<input type='password' name='password'>
 	<br><br>
 	
+	<input type='hidden' name='timezone'>
+	
+	<script>
+		$('input[name=timezone]').val(jstz.determine().name());
+	</script>
+	
 	<input type='submit' value='Sign up'>
 
 </form>
-	

@@ -6,6 +6,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
 	<!-- Common CSS -->
 	<link rel="stylesheet" href="/css/tersewords.css"> 
+	<script src="/js/jquery-1.10.2.js"></script>
+	<script src="/js/jstz.js"></script>
 	<!-- Controller Specific JS/CSS -->
 	<?php if(isset($client_files_head)) echo $client_files_head; ?>
 	

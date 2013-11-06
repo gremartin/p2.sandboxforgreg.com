@@ -10,6 +10,10 @@
 		<time datetime="<?=Time::display($post['created'], 'Y-m-d G:i')?>">
 			<?=Time::display($post['created'])?>
 		</time>
+		
+		<?php if($post['post_user_id'] == $post['follower_id']): ?>
+		<br><a href='/posts/delete/<?=$post['post_id']?>'>Delete Post</a>
+		<?php endif; ?>
 	</article>
 	
 <?php endforeach; ?>

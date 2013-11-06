@@ -6,17 +6,12 @@ class users_controller extends base_controller{
         #echo "users_controller construct called<br><br>";
     } 
 
-    public function index() {
-        echo "This is the index page";
-    }
-
     public function signup() {
        #Setup view
-	   $this->template->content = View::instance('v_users_signup');
-	   $this->template->title = "Sign Up";
-	   
-	   #Render template
-	   echo $this -> template;
+		$this->template->content = View::instance('v_users_signup');
+		$this->template->title = "Sign Up";
+		#Render template
+		echo $this -> template;
     }
 	
 	public function p_signup() {
@@ -32,11 +27,13 @@ class users_controller extends base_controller{
 			FROM users
 			WHERE
 				email =  '".$_POST['email']."'";
+		
 		$emailTest = DB::instance(DB_NAME)->select_field($q);
 		if($emailTest) {
+			$messageID = 0;
 			$this->template->content = View::instance('v_users_signup_error');
 			$this->template->title = "Sign up Error";
-			$messageID = 0;
+			
 			$this->template->content->messageID = $messageID;
 			echo $this->template;
 		}
@@ -64,18 +61,33 @@ class users_controller extends base_controller{
 			#create variable to hold token value
 			$token = $_POST['token'];
 			#log user in
-			setcookie("token", $token, strtotime('+1 year'), '/');
+			setcookie("token", $token, strtotime('+1 year'), '/');			
 			
-			#Send user to main page or wherever I prefer
-			Router::redirect("/");
+			
+			Router::redirect("/users/confirm");
+			
 		}
 	}
-	
-    public function login()	{
+	public function confirm()
+	{		#set user up to follow themselves
+			$data = Array(
+			"created" => Time::now(),
+			"user_id" => $this->user->user_id,
+			"user_id_followed" => $this->user->user_id
+			);
+			#insert connection in users-users table
+			DB::instance(DB_NAME)->insert('users_users', $data);
+			$this->template->content = View::instance('v_users_signup_confirm');
+			$this->template->title = "Signup Successful";
+			echo $this->template;
+			
+	}
+    public function login($error = NULL)	{
 		# Setup view
 			$this->template->content = View::instance('v_users_login');
 			$this->template->title = "Login";
-			
+			# send error info to view
+			$this->template->content->error = $error;
 		# Render template
 			echo $this->template;
 	}
@@ -100,7 +112,7 @@ class users_controller extends base_controller{
 		if(!$token) {
 		
 			#return user to login page
-			Router::redirect("/users/login/");
+			Router::redirect("/users/login/error");
 			
 		# But if we did, login succeeded! 
 		}else {
@@ -142,7 +154,7 @@ class users_controller extends base_controller{
 
     }
 
-    public function profile($user_name = NULL) {        
+    public function profile() {        
 		/*
 		If you look at _v_template you'll see it prints a $content variable in the <body>
 		Knowing that, let's pass our v_users_profile.php view fragment to $content so 
@@ -170,10 +182,50 @@ class users_controller extends base_controller{
 		# Setup view
 		$this->template->content = View::instance('v_users_profile');
 		$this->template->title   = "Profile of ".$this->user->first_name;
-
+		$signupDate = Time::display($this->user->created, 'm-d-Y');
+		$this->template->content->signupDate = $signupDate;
 		# Render template
 		echo $this->template;
 			
     }
+	public function change_password ($error = NULL){
+		$this->template->content = View::instance('v_users_change_password');
+		$this->template->title   = "Change Password";
+		# send error info to view
+		$this->template->content->error = $error;
+		# Render template
+		echo $this->template;
+	}
+	
+	public function p_change_password (){
+		# sanitize data from user
+		$_POST=DB::instance(DB_NAME)->sanitize($_POST);
+		# hash submitted password
+		$_POST['password'] = sha1(PASSWORD_SALT.$_POST['password']);		
+		$q = "SELECT password
+				FROM users
+				WHERE email = '".$this->user->email."'
+				AND password = '".$_POST['password']."'";
+		$password = DB::instance(DB_NAME)->select_field($q);
+		if($password != $_POST['password']){
+			Router::redirect('/users/change_password/error');
+			}
+		else if($_POST['new_password'] != $_POST['confirmed_password']){
+			Router::redirect('/users/change_password/error');
+		}
+		else{
+			# hash submitted new password
+			$_POST['new_password'] = sha1(PASSWORD_SALT.$_POST['new_password']);
+			$data = Array('password' => $_POST['new_password']);
+			DB::instance(DB_NAME)->update_row('users', $data, "WHERE user_id = '".$this->user->user_id."'");
+			Router::redirect('/users/password_confirmation');
+		}
+	}
+	public function password_confirmation(){
+		$this->template->content = View::instance('v_users_password_confirmation');
+		$this->template->title = "Password Changed";
+		echo $this->template;
+		
+	}
 
 } # end of the class

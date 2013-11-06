@@ -6,7 +6,7 @@
 
 }
 #header{
-	height: 57px;
+	height: 70px;
 }
 #menu{
 	text-align: right;
@@ -25,6 +25,9 @@ body{
 .listHeading{
 	text-decoration: underline;
 }
+.error p{
+	color:red;
+}
 p{
 	font-size: 16px;
 	text-align: center;
@@ -32,4 +35,8 @@ p{
 textarea{
 	width: 400px;
 	height: 100px;
+	text-align: left;
+}
+li{
+	font-size: 20px;
 }
